@@ -1,8 +1,5 @@
 # Vite Plugin Three.js Touch Controller
 
-A Vite plugin for adding a Three.js touch controller.
+A Vite plugin allowing developers to remotely manipulate the position, shape and rotation of scene meshes using a remote touch screen device.
 
-## Installation
-
-```bash
-npm install vite-plugin-threejs-touch-controller
+Readme to follow...

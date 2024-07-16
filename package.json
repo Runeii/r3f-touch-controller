@@ -1,9 +1,9 @@
 {
-  "name": "three-js-touch-controller",
+  "name": "vite-plugin-threejs-touch-controller",
   "version": "1.0.0",
-  "main": "dist/three-js-touch-controller.js",
-  "module": "dist/three-js-touch-controller.js",
-  "types": "dist/three-js-touch-controller.d.ts",
+  "main": "dist/vite-plugin-threejs-touch-controller.es.js",
+  "module": "dist/vite-plugin-threejs-touch-controller.es.js",
+  "types": "dist/vite-plugin-threejs-touch-controller.d.ts",
   "description": "A Vite plugin for manipulating elements in Three.js using a touch device.",
   "keywords": [
     "vite",
@@ -12,6 +12,7 @@
   ],
   "author": "Andrew H <contact@highpertinent.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -27,10 +28,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/runeii/three-js-touch-controller.git"
+    "url": "https://github.com/runeii/vite-plugin-threejs-touch-controller.git"
   },
   "bugs": {
-    "url": "https://github.com/runeii/three-js-touch-controller/issues"
+    "url": "https://github.com/runeii/vite-plugin-threejs-touch-controller/issues"
   },
-  "homepage": "https://github.com/runeii/three-js-touch-controller#readme"
+  "homepage": "https://github.com/runeii/vite-plugin-threejs-touch-controller#readme",
+  "dependencies": {
+    "@react-spring/three": "^9.7.3",
+    "@react-three/fiber": "^8.16.8",
+    "@use-gesture/react": "^10.3.1",
+    "three": "^0.166.1"
+  }
 }
