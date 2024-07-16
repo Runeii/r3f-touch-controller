@@ -1,5 +1,5 @@
 {
-  "name": "vite-plugin-threejs-touch-controller",
+  "name": "vite-r3f-touch-controller",
   "version": "1.0.0",
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
@@ -15,29 +15,32 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && tsc",
     "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-spring/three": "^9.7.3",
+    "@react-three/drei": "^9.108.4",
+    "@react-three/fiber": "^8.16.8",
+    "@use-gesture/react": "^10.3.1",
+    "three": "^0.166.1"
   },
   "devDependencies": {
     "@types/node": "20.14.10",
-    "typescript": "5.2.2",
-    "vite": "5.3.1"
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.166.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
   },
   "files": [
     "dist/**/*"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/runeii/vite-plugin-threejs-touch-controller.git"
+    "url": "https://github.com/runeii/vite-r3f-touch-controller.git"
   },
   "bugs": {
-    "url": "https://github.com/runeii/vite-plugin-threejs-touch-controller/issues"
+    "url": "https://github.com/runeii/vite-r3f-touch-controller/issues"
   },
-  "homepage": "https://github.com/runeii/vite-plugin-threejs-touch-controller#readme",
-  "dependencies": {
-    "@react-spring/three": "^9.7.3",
-    "@react-three/fiber": "^8.16.8",
-    "@use-gesture/react": "^10.3.1",
-    "three": "^0.166.1"
-  }
+  "homepage": "https://github.com/runeii/vite-r3f-touch-controller#readme"
 }

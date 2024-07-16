@@ -1,4 +1,4 @@
 import TouchController from "./client/TouchController/TouchController";
-import threejsTouchController from "./plugin/vite-plugin-threejs-touch-controller";
+import touchControllerPlugin from "./plugin/vite-r3f-touch-controller";
 
-export { threejsTouchController as TouchControllerPlugin, TouchController };
+export { touchControllerPlugin, TouchController };

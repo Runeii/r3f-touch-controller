@@ -1,13 +1,13 @@
 import { Plugin } from 'vite';
 
-export default function threejsTouchController(): Plugin {
+export default function viteR3FTouchController(): Plugin {
   return {
     name: 'threejs-touch-controller',
     configureServer: async (server) => {
-      server.ws.on('vite-plugin-threejs-touch-controller', (data, socket) => {
+      server.ws.on('vite-r3f-touch-controller', (data, socket) => {
         server.ws.clients.forEach((client) => {
           if (client !== socket) {
-            client.send('vite-plugin-threejs-touch-controller', data);
+            client.send('vite-r3f-touch-controller', data);
           }
         });
       });

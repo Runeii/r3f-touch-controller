@@ -42,7 +42,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
 
       setActiveMesh(mesh);
 
-      import.meta.hot?.send?.('vite-plugin-threejs-touch-controller', {
+      import.meta.hot?.send?.('vite-r3f-touch-controller', {
         type: 'click',
         data: mesh,
       });
@@ -55,7 +55,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       return;
     }
 
-    import.meta.hot?.on('vite-plugin-threejs-touch-controller', (message) => {
+    import.meta.hot?.on('vite-r3f-touch-controller', (message) => {
       if (message.type !== 'click' || !message.data) {
         return;
       }
@@ -74,7 +74,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
     
     const { position, rotation, scale } = spring;
 
-    import.meta.hot?.send?.('vite-plugin-threejs-touch-controller', {
+    import.meta.hot?.send?.('vite-r3f-touch-controller', {
       type: 'update',
       data: {
         uuid: activeMesh.uuid,
@@ -91,7 +91,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       return;
     }
 
-    import.meta.hot?.on('vite-plugin-threejs-touch-controller', (message) => {
+    import.meta.hot?.on('vite-r3f-touch-controller', (message) => {
       if (message.type !== 'update' || !activeMesh) {
         return;
       }
