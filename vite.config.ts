@@ -17,15 +17,17 @@ export default defineConfig({
         'fs/promises',
         'url',
         'fs',
-        'react',
         'vite',
+        'react',
+        'react-dom',
         'three',
-        '@react-three/fiber',
+        '@react-three/fiber'
       ],
       output: {
         globals: {
           '@react-three/fiber': 'fiber',
           'react': 'React',
+          'react-dom': 'ReactDOM',
           'three': 'THREE',
           vite: 'Vite'
         }

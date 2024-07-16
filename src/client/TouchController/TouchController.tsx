@@ -1,15 +1,22 @@
 import { useSpring } from "@react-spring/three";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react"
-import {  Object3D, ObjectLoader } from "three";
+import { Object3D, ObjectLoader } from "three";
 import { raycastAtCoordinate } from "./utils";
 import ControllerUI from "./ControllerUI/ControllerUI";
 
-const urlParams = new URLSearchParams(window.location.search);
-const isController = urlParams.has('isController');
+let isControllerDefault = false;
 
+if (typeof window !== 'undefined') {
+  const urlParams = new URLSearchParams(window.location.search);
+  isControllerDefault = urlParams.has('isController');
+}
 
-const TouchController = () => {
+type TouchControllerProps = {
+  isController?: boolean;
+}
+
+const TouchController = ({ isController = isControllerDefault }: TouchControllerProps) => {
   const {scene, camera } = useThree();
 
   const [activeMesh, setActiveMesh] = useState<Object3D>();
@@ -40,7 +47,7 @@ const TouchController = () => {
         data: mesh,
       });
     });
-  }, [activeMesh, camera, scene]);
+  }, [activeMesh, camera, isController, scene]);
 
   // Handle setting up controller to display selected element
   useEffect(() => {
@@ -57,7 +64,7 @@ const TouchController = () => {
       const mesh = loader.parse(data);
       setActiveMesh(mesh);
     })
-  }, []);
+  }, [isController]);
 
   // Handle communicating controller updates to client
   useFrame(() => {
@@ -96,7 +103,7 @@ const TouchController = () => {
       activeMesh.rotation.set(rotation[0], rotation[1], rotation[2]);
       activeMesh.scale.set(scale[0], scale[1], scale[2]);
     })
-  }, [activeMesh]);
+  }, [activeMesh, isController]);
 
   if (!isController) {
     return null;

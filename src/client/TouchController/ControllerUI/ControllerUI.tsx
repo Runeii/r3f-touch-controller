@@ -1,6 +1,7 @@
 import { Html } from '@react-three/drei';
 import styles from './ControllerUI.module.css';
-import { animated, SpringRef, SpringValue } from "@react-spring/three";
+import { animated } from "@react-spring/three";
+import type { SpringRef, SpringValue } from "@react-spring/three";
 import { useGesture } from "@use-gesture/react";
 import { createPortal } from "react-dom";
 import { Object3D } from "three";

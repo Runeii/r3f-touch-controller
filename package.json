@@ -1,9 +1,9 @@
 {
   "name": "vite-plugin-threejs-touch-controller",
   "version": "1.0.0",
-  "main": "dist/vite-plugin-threejs-touch-controller.es.js",
-  "module": "dist/vite-plugin-threejs-touch-controller.es.js",
-  "types": "dist/vite-plugin-threejs-touch-controller.d.ts",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "description": "A Vite plugin for manipulating elements in Three.js using a touch device.",
   "keywords": [
     "vite",
