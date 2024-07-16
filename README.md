@@ -1,5 +1,7 @@
 # Vite + R3F Touch Controller
 
+## This is a WIP. It works but I wouldn't recommend using it.
+
 A Vite plugin allowing developers to remotely manipulate the position, shape and rotation of scene meshes using a remote touch screen device.
 
 Readme to follow...
