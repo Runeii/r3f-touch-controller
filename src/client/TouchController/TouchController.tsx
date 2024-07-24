@@ -1,9 +1,11 @@
-import { useSpring } from "@react-spring/three";
-import { useFrame, useThree } from "@react-three/fiber";
-import React, { useEffect, useState } from "react"
-import { Object3D, ObjectLoader } from "three";
+import styles from './TouchController.module.css';
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef, useState } from "react"
+import { Mesh, Object3D, ObjectLoader } from "three";
 import { raycastAtCoordinate } from "./utils";
-import ControllerUI from "./ControllerUI/ControllerUI";
+import Gyroscope from "./Gyroscope/Gyroscope";
+import { createPortal } from "react-dom";
+import { Html } from "@react-three/drei";
 
 let isControllerDefault = false;
 
@@ -20,13 +22,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
   const {scene, camera } = useThree();
 
   const [activeMesh, setActiveMesh] = useState<Object3D>();
-
-  const [spring, api] = useSpring(() => ({
-    position: activeMesh?.position.toArray() ?? [0, 0, 0],
-    rotation: (activeMesh?.rotation.toArray()?.slice(0, -1) as number[]) ?? [0, 0, 0],
-    scale: activeMesh?.scale.toArray() ?? [0, 0, 0],
-    immediate: true,
-  }), [activeMesh]);
+  const controllerSphereRef = useRef<Mesh>(null);
 
   // Handle selecting element on client screen
   useEffect(() => {
@@ -56,31 +52,38 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
     }
 
     import.meta.hot?.on('vite-r3f-touch-controller', (message) => {
-      if (message.type !== 'click' || !message.data) {
+      if (message.type !== 'click' || !message.data || !controllerSphereRef.current) {
         return;
       }
+
+      controllerSphereRef.current.userData.hasTouched = false;
+  
       const { data } = message;
       const loader = new ObjectLoader();
       const mesh = loader.parse(data);
+
+      controllerSphereRef.current?.position.set(...mesh.position.toArray());
+      controllerSphereRef.current?.rotation.set(mesh.rotation.x, mesh.rotation.y, mesh.rotation.z);
+      controllerSphereRef.current?.scale.set(...mesh.scale.toArray());
       setActiveMesh(mesh);
     })
   }, [isController]);
 
   // Handle communicating controller updates to client
   useFrame(() => {
-    if (!isController || !activeMesh) {
+    if (!isController || !activeMesh || !controllerSphereRef.current || !controllerSphereRef.current.userData.hasTouched) {
       return;
     }
     
-    const { position, rotation, scale } = spring;
+    const { position, rotation, scale } = controllerSphereRef.current;
 
     import.meta.hot?.send?.('vite-r3f-touch-controller', {
       type: 'update',
       data: {
         uuid: activeMesh.uuid,
-        position: position.get(),
-        rotation: rotation.get(),
-        scale: scale.get(),
+        position: position.toArray(),
+        rotation: rotation.toArray(),
+        scale: scale.toArray(),
       }
     });
   });
@@ -95,21 +98,35 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       if (message.type !== 'update' || !activeMesh) {
         return;
       }
+
       const { uuid, position, rotation, scale } = message.data;
       if (uuid !== activeMesh.uuid) {
         return;
       }
+
       activeMesh.position.set(position[0], position[1], position[2]);
       activeMesh.rotation.set(rotation[0], rotation[1], rotation[2]);
       activeMesh.scale.set(scale[0], scale[1], scale[2]);
     })
   }, [activeMesh, isController]);
 
+
   if (!isController) {
     return null;
   }
 
-  return <ControllerUI activeMesh={activeMesh} api={api} spring={spring} />;
+  const dom = (
+    <div className={styles.frame}>
+      <Canvas scene={{
+        name: 'controller',
+      }}>
+        <Gyroscope activeMesh={activeMesh} controllerSphereRef={controllerSphereRef} />;
+      </Canvas>
+    </div>
+  )
+
+  return <Html>{createPortal(dom, document.body)}</Html>;
+  
 }
 
 export default TouchController;

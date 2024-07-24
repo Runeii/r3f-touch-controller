@@ -1,0 +1,8 @@
+.frame {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  z-index: 99;
+  touch-action: none;
+  pointer-events: auto;
+}
