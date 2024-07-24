@@ -13,21 +13,21 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'path',
-        'fs/promises',
-        'url',
-        'fs',
         'vite',
         'react',
+        'react/jsx-runtime',
         'react-dom',
+        'react-dom/client',
         'three',
-        '@react-three/fiber'
+        '@react-three/fiber',
       ],
       output: {
         globals: {
           '@react-three/fiber': 'fiber',
           'react': 'React',
           'react-dom': 'ReactDOM',
+          'react-dom/client': 'ReactDOMClient',
+          'react/jsx-runtime': 'jsxRuntime',
           'three': 'THREE',
           vite: 'Vite'
         }

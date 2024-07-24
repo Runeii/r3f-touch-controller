@@ -1,3 +1,6 @@
+// This plugin needs to connect to the client-side HMR API
+// As such, we do not want Vite to strip out `import.meta.hot`
+
 export default function preserveHMRPlugin() {
   return {
     name: 'preserve-hmr-plugin',
