@@ -1,17 +1,20 @@
 # React Three Fiber Touch Controller
 
+https://github.com/user-attachments/assets/6aa37b9f-00a4-43db-aed0-82119a038884
+
 A Vite plugin allowing developers to remotely manipulate the position, shape and rotation of scene meshes using a remote touch screen device.
 
 ## Requirements
 * A touch device – ideally an iPad
 * A React Three Fiber scene
-* A Vite project (recommended, but can be optional see note below)
+* A Vite project (recommended, but can be optional [see note below](#using-without-vite) )
 
 ## An important note
 Please note, this is very much a demo and not designed for use in production projects. You're welcome to build on it, do what you wish with it, but I am not responsible for any meshes rotated, scaled or positioned.
 
-## Installationr3f
+## Installation
 1. Add the touchControllerPlugin to your vite.config.ts file.
+
 ```
 import { defineConfig } from 'vite';
 import { touchControllerPlugin } from 'vite-r3f-touch-controller';
@@ -21,7 +24,7 @@ export default defineConfig({
     touchControllerPlugin()
   ]
 });
-```r3f
+```
 
 2. Add the TouchController component to your React Three Fiber tree:
 ```
