@@ -47,7 +47,6 @@ const Gyroscope = ({ activeMesh }: GyroscopeProps) => {
       {activeMesh && (
         <primitive
           object={activeMesh}
-          position={[0,0,0]}
           {...bind()}
         >
           <mesh>

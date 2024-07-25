@@ -1,5 +1,5 @@
 {
-  "name": "vite-r3f-touch-controller",
+  "name": "r3f-touch-controller",
   "version": "1.0.0",
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
@@ -43,10 +43,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/runeii/vite-r3f-touch-controller.git"
+    "url": "https://github.com/runeii/r3f-touch-controller.git"
   },
   "bugs": {
-    "url": "https://github.com/runeii/vite-r3f-touch-controller/issues"
+    "url": "https://github.com/runeii/r3f-touch-controller/issues"
   },
-  "homepage": "https://github.com/runeii/vite-r3f-touch-controller#readme"
+  "homepage": "https://github.com/runeii/r3f-touch-controller#readme"
 }

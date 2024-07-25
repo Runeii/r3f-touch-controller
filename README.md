@@ -10,7 +10,7 @@ A Vite plugin allowing developers to remotely manipulate the position, shape and
 ## An important note
 Please note, this is very much a demo and not designed for use in production projects. You're welcome to build on it, do what you wish with it, but I am not responsible for any meshes rotated, scaled or positioned.
 
-## Installation
+## Installationr3f
 1. Add the touchControllerPlugin to your vite.config.ts file.
 ```
 import { defineConfig } from 'vite';
@@ -21,7 +21,7 @@ export default defineConfig({
     touchControllerPlugin()
   ]
 });
-```
+```r3f
 
 2. Add the TouchController component to your React Three Fiber tree:
 ```

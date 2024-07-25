@@ -46,7 +46,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
 
       setActiveMesh(mesh);
 
-      import.meta.hot?.send?.('vite-r3f-touch-controller', {
+      import.meta.hot?.send?.('r3f-touch-controller', {
         type: 'click',
         data: mesh,
       });
@@ -59,7 +59,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       return;
     }
 
-    import.meta.hot?.on('vite-r3f-touch-controller', (message) => {
+    import.meta.hot?.on('r3f-touch-controller', (message) => {
       if (message.type !== 'click' || !message.data) {
         return;
       }
@@ -67,6 +67,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       const { data } = message;
       const loader = new ObjectLoader();
       const mesh = loader.parse(data);
+
       setActiveMesh(mesh);
     })
   }, [isController]);
@@ -77,7 +78,7 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       return;
     }
 
-    import.meta.hot?.on('vite-r3f-touch-controller', (message) => {
+    import.meta.hot?.on('r3f-touch-controller', (message) => {
       if (message.type !== 'update' || !activeMesh) {
         return;
       }

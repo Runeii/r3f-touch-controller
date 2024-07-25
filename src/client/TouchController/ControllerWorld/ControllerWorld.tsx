@@ -51,7 +51,7 @@ const ControllerWorld = ({ activeMesh, setDetails }: ControllerWorldProps) => {
       scale: scale.toArray(),
     }
 
-    import.meta.hot?.send?.('vite-r3f-touch-controller', {
+    import.meta.hot?.send?.('r3f-touch-controller', {
       type: 'update',
       data: details
     });
