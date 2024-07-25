@@ -4,8 +4,8 @@ A Vite plugin allowing developers to remotely manipulate the position, shape and
 
 ## Requirements
 * A touch device – ideally an iPad
-* A Vite project
 * A React Three Fiber scene
+* A Vite project (recommended, but can be optional see note below)
 
 ## An important note
 Please note, this is very much a demo and not designed for use in production projects. You're welcome to build on it, do what you wish with it, but I am not responsible for any meshes rotated, scaled or positioned.
@@ -47,3 +47,11 @@ const YourComponent = () => {
 *  Two fingers circular rotation (like twisting the volume knob on a hifi) – rotate the mesh in a circular motion
 *  Two fingers pinch – scale the mesh up and down
 *  Three fingers – move the mesh around the scene
+
+## Using without Vite
+The plugin takes advantage of Vite's HMR socket server to send messages between the two devices. But, in theory, Vite is not essential for this. To replace Vite:
+* Add the Touch Controller component to your scene
+* The dev server hosting the FE, which the controller is pointing to, should expose a socket server
+* The server should listen for `r3f-touch-controller` events and communicate them to all clients on receipt
+
+Currently this would require an adjustment to the component, which exclusively uses the `import.meta.hot` socket exposed by Vite. By replacing this with any other socket server, Vite should not be required.
