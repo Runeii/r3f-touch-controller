@@ -1,44 +1,29 @@
 import { useGesture } from "@use-gesture/react";
-import { DoubleSide, Mesh, Object3D, Quaternion, Vector3 } from "three";
-import { useFrame, useThree } from '@react-three/fiber';
-import { act, MutableRefObject, useEffect, useRef } from 'react';
-import { getMeshRotationRelativeToCamera } from "../../utils";
+import { DoubleSide, Object3D, Quaternion, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 type GyroscopeProps = {
   activeMesh?: Object3D;
 };
 
+const ROTATION_QUATERNION = new Quaternion();
+const ROTATION_VECTOR = new Vector3();
+
 const Gyroscope = ({ activeMesh }: GyroscopeProps) => {
-  const maxTouchesSoFar = useRef(0);
-  const initialPinchRotation = useRef<number>(0);
-  const camera = useThree(state => state.camera)
   const bind = useGesture(
     {
-      onPinch: ({canceled, last, movement: [distance, angle]}) => {
+      onPinch: ({ delta: [_, angle]}) => {
         if (!activeMesh) {
           return;
         }
-        return
-        if (canceled || last) {
-          initialPinchRotation.current = 0;
+        const sign = Math.sign(angle);
+        if (sign === 0) {
           return;
         }
-        const meshRotation = getMeshRotationRelativeToCamera(camera, activeMesh);
-        if (!initialPinchRotation.current) {
-          initialPinchRotation.current = meshRotation.y;
-        }
-
-        // Normalize the vector to get the axis of rotation
-        let rotationAxis = new Vector3(0, Math.sign(angle), 0); 
-
-        // Create a quaternion for the rotation
-        let quaternion = new Quaternion();
-        quaternion.setFromAxisAngle(rotationAxis, degToRad(angle));
-      //  console.log(degToRad(angle));
-        // Apply the quaternion rotation to the mesh
-       // activeMesh.quaternion.multiplyQuaternions(quaternion, activeMesh.quaternion);
-      }
+        ROTATION_VECTOR.y = sign;
+        ROTATION_QUATERNION.setFromAxisAngle(ROTATION_VECTOR, degToRad(angle * -sign));
+        activeMesh.quaternion.multiply(ROTATION_QUATERNION);
+      },
     },
     {
       drag: {
