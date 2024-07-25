@@ -1,7 +1,7 @@
 import styles from './TouchController.module.css';
 import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react"
-import { Mesh, Object3D, ObjectLoader } from "three";
+import { useEffect, useState } from "react"
+import { Object3D, ObjectLoader } from "three";
 import {  raycastAtCoordinate } from "./utils";
 import { Html } from "@react-three/drei";
 import ControllerWorld from './ControllerWorld/ControllerWorld';
@@ -18,11 +18,19 @@ type TouchControllerProps = {
   isController?: boolean;
 }
 
+export type Details = {
+  uuid: string;
+  name?: string
+  position: number[];
+  rotation: number[];
+  scale: number[];
+}
+
 const TouchController = ({ isController = isControllerDefault }: TouchControllerProps) => {
-  const {scene, camera } = useThree();
+  const scene = useThree(state => state.scene);
+  const camera = useThree(state => state.camera);
 
   const [activeMesh, setActiveMesh] = useState<Object3D>();
-  const controllerSphereRef = useRef<Mesh>(null);
 
   // Handle selecting element on client screen
   useEffect(() => {
@@ -59,7 +67,6 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       const { data } = message;
       const loader = new ObjectLoader();
       const mesh = loader.parse(data);
-
       setActiveMesh(mesh);
     })
   }, [isController]);
@@ -75,17 +82,18 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
         return;
       }
 
-      const { uuid, position, rotation, scale } = message.data;
+      const { uuid, position, rotation, scale } = message.data as Details;
       if (uuid !== activeMesh.uuid) {
         return;
       }
 
-     // activeMesh.position.set(position[0], position[1], position[2]);
+      activeMesh.position.set(position[0], position[1], position[2]);
       activeMesh.rotation.set(rotation[0], rotation[1], rotation[2]);
-      //activeMesh.scale.set(scale[0], scale[1], scale[2]);
+      activeMesh.scale.set(scale[0], scale[1], scale[2]);
     })
   }, [activeMesh, isController]);
 
+  const [details, setDetails] = useState<Details>();
 
   if (!isController) {
     return null;
@@ -96,8 +104,21 @@ const TouchController = ({ isController = isControllerDefault }: TouchController
       {createPortal((
         <div className={styles.frame}>
           <Canvas scene={{ name: 'controller' }}>
-            <ControllerWorld activeMesh={activeMesh} controllerSphereRef={controllerSphereRef} />
+            <ControllerWorld activeMesh={activeMesh} setDetails={setDetails} />
           </Canvas>
+          <div className={styles.details}>
+            {(activeMesh && details) ? (
+              <div>
+                {details.name && <p>{details.name}</p>}
+                <p>ID: {details.uuid}</p>
+                <p>Position: {details.position.map((n) => n.toFixed(2)).join(', ')}</p>
+                <p>Rotation: {details.rotation.map((n) => n.toFixed(2)).join(', ')}</p>
+                <p>Scale: {details.scale.map((n) => n.toFixed(2)).join(', ')}</p>
+              </div>
+            ) : (
+              <p>Select an object to view details</p> 
+            )}
+          </div>
         </div>
       ), document.body)}
     </Html>

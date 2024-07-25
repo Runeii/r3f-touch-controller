@@ -1,4 +1,5 @@
-import { Camera, Euler, Mesh, Object3D, Quaternion, Raycaster, Scene, Vector2 } from "three";
+import { Camera, Euler, Mesh, Object3D, Quaternion, Raycaster, Scene, Vector2, Vector3 } from "three";
+import { ModifiedOrbitControls } from "./ControllerWorld/ModifiedOrbitControls/ModifiedOrbitControls";
 
 export const raycastAtCoordinate = (x: number, y: number, camera: Camera, scene: Scene) => {
   const raycaster = new Raycaster();
@@ -51,3 +52,20 @@ export const getMeshRotationRelativeToCamera = (camera: Camera, mesh: Object3D) 
 
   return relativeEuler;
 }
+
+
+const DISTANCE = 6;
+
+export const updateCameraPosition = (activeMesh: Object3D, camera: Camera, controls: ModifiedOrbitControls,) => {
+  const newDistance = DISTANCE * activeMesh.scale.x;
+
+  // Calculate the direction from the camera to the mesh
+  const direction = new Vector3();
+  camera.getWorldDirection(direction);
+  camera.position.copy(activeMesh.position).sub(direction.multiplyScalar(newDistance));
+
+  // Ensure OrbitControls target is set to the mesh position
+  controls.target.copy(activeMesh.position);
+  controls.update();
+  //console.log(DISTANCE, activeMesh.scale.x, DISTANCE / activeMesh.scale.x, controls.getDistance());
+};

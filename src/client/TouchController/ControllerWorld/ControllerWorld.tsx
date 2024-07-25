@@ -1,18 +1,20 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { MutableRefObject, useMemo } from "react"
-import { Mesh, Object3D  } from "three";
-import { getMeshRotationRelativeToCamera } from "../utils";
+import { Dispatch, SetStateAction, useMemo } from "react"
+import { Object3D  } from "three";
+import { getMeshRotationRelativeToCamera, updateCameraPosition } from "../utils";
 import Gyroscope from "./Gyroscope/Gyroscope";
 import { ModifiedOrbitControls } from "./ModifiedOrbitControls/ModifiedOrbitControls";
+import type { Details } from "../TouchController";
 
 type ControllerWorldProps = {
   activeMesh?: Object3D;
-  controllerSphereRef: MutableRefObject<Mesh | null>;
+  setDetails: Dispatch<SetStateAction<Details | undefined>>
 };
 
 
-const ControllerWorld = ({ activeMesh }: ControllerWorldProps) => {
+const ControllerWorld = ({ activeMesh, setDetails }: ControllerWorldProps) => {
   const camera = useThree(state => state.camera);
+
   const domElement = useThree(state => state.gl.domElement);
 
   const controlsInstance = useMemo(() => {
@@ -24,26 +26,43 @@ const ControllerWorld = ({ activeMesh }: ControllerWorldProps) => {
     return controls;
   }, [camera, domElement]);
 
+  useFrame(({ camera }) => {
+    if (!activeMesh) {
+      return;
+    } 
+
+     updateCameraPosition(activeMesh, camera, controlsInstance);
+  });
+
   // Handle communicating controller updates to client
   useFrame(({ camera }) => {
     if (!activeMesh ) {
       return;
     }
-    
-//console.log(controlsRef)
+
+    const { position, scale } = activeMesh;
     const rotation = getMeshRotationRelativeToCamera(camera, activeMesh);
+
+    const details: Details = {
+      uuid: activeMesh.uuid,
+      name: activeMesh.name,
+      position: position.toArray(),
+      rotation: rotation.toArray().slice(0, 3) as [number, number, number],
+      scale: scale.toArray(),
+    }
 
     import.meta.hot?.send?.('vite-r3f-touch-controller', {
       type: 'update',
-      data: {
-        uuid: activeMesh.uuid,
-      //  position: position.toArray(),
-        rotation: rotation.toArray(),
-      //  scale: scale.toArray(),
+      data: details
+    });
+
+    setDetails((currentDetails: Details | undefined) => {
+      if (JSON.stringify(currentDetails) === JSON.stringify(details)) {
+        return currentDetails;
       }
+      return details;
     });
   });
-
 
   return (
     <>

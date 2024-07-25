@@ -6,3 +6,22 @@
   touch-action: none;
   pointer-events: auto;
 }
+
+.details {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.details p {
+  margin: 0em;
+}
+
+.details p:first-child {
+  font-size: 1.3rem;
+}
+
+.details p:last-child {
+  margin-bottom: 1em;
+}

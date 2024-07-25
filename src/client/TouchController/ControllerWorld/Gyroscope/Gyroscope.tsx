@@ -1,35 +1,43 @@
+import { useThree } from "@react-three/fiber";
 import { useGesture } from "@use-gesture/react";
-import { DoubleSide, Object3D, Quaternion, Vector3 } from "three";
-import { degToRad } from "three/src/math/MathUtils.js";
+import { DoubleSide, Object3D } from "three";
+import { handleCircularRotation, handleMoveMesh, handleScaleMesh } from "./utils";
 
 type GyroscopeProps = {
   activeMesh?: Object3D;
 };
 
-const ROTATION_QUATERNION = new Quaternion();
-const ROTATION_VECTOR = new Vector3();
-
 const Gyroscope = ({ activeMesh }: GyroscopeProps) => {
+  const camera = useThree(state => state.camera);
   const bind = useGesture(
     {
-      onPinch: ({ delta: [_, angle]}) => {
+      onDrag: (state) => {
         if (!activeMesh) {
           return;
         }
-        const sign = Math.sign(angle);
-        if (sign === 0) {
+
+        if (state.touches === 3) {
+          handleMoveMesh(activeMesh, camera, state);
+        }
+      },
+      onPinch: state => {
+        if (!activeMesh) {
           return;
         }
-        ROTATION_VECTOR.y = sign;
-        ROTATION_QUATERNION.setFromAxisAngle(ROTATION_VECTOR, degToRad(angle * -sign));
-        activeMesh.quaternion.multiply(ROTATION_QUATERNION);
-      },
+
+        if (state.touches === 2) {
+          handleCircularRotation(activeMesh, camera, state);
+          handleScaleMesh(activeMesh, state);
+        }
+      }
     },
     {
       drag: {
         filterTaps: true
       },
-      pinch: { rubberband: true }
+      pinch: {
+        rubberband: true,
+      }
     }
   );
 
