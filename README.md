@@ -1,6 +1,7 @@
 # React Three Fiber Touch Controller
 
-https://github.com/user-attachments/assets/6aa37b9f-00a4-43db-aed0-82119a038884
+https://github.com/user-attachments/assets/14cead5d-c0db-4156-8506-8e425baaf796
+
 
 A Vite plugin allowing developers to remotely manipulate the position, shape and rotation of scene meshes using a remote touch screen device.
 
